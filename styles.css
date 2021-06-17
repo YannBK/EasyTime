@@ -53,11 +53,17 @@
     color: rgb(236, 179, 35);
 }
 #total{
+    text-align: left;
     font-size: 1.4rem;
     color: rgb(252, 216, 127);
     bottom: 0px;
 }
-
+#totalheure{
+    text-align: right;
+    font-size: 1.4rem;
+    color: rgb(119, 201, 65);
+    bottom: 0px;
+}
 p{
     display:block;
     font-weight: bold;

@@ -85,7 +85,7 @@ const stockOperator = () => {
             point.disabled = false;
             heure.disabled = false;
             //stockage valeurs dans array
-            if (Number(nombreSaisie.textContent) !== NaN) {
+            if (!nombreSaisie.textContent.includes('h')) {
                 if (nombreTotal.textContent === "") {
                     arguments.push(Number(nombreSaisie.textContent));
                     arguments.push(btno[i].value);
@@ -110,10 +110,36 @@ const stockOperator = () => {
                     console.log(nombreResultat);
                 }
             }
-            else{ //TODO et là il faut gérer ces p** d'heures
-
+            else { //TODO et là il faut gérer ces p** d'heures
+                let bbb = nombreSaisie.textContent.split('h')
+                bbb[1] = bbb[1] / 60;
+                let ccc = Number(bbb[0]) + bbb[1];
+                if (nombreTotal.textContent === "") {
+                    arguments.push(ccc);
+                    arguments.push(btno[i].value);
+                    //affichage de l'opération
+                    nombreResultat.textContent += ` ${btno[i].value} `;
+                    resultat.appendChild(nombreResultat);
+                    //réinitialisation saisie
+                    nombreSaisie.textContent = "";
+                    console.log(arguments);
+                    console.log(nombreResultat);
+                }
+                else {
+                    nombreTotal.textContent = "";
+                    total.appendChild(nombreTotal);
+                    arguments.push(btno[i].value);
+                    //affichage de l'opération
+                    nombreResultat.textContent = `${arguments[0]} ${btno[i].value} `;
+                    resultat.appendChild(nombreResultat);
+                    //réinitialisation saisie
+                    nombreSaisie.textContent = "";
+                    console.log(arguments);
+                    console.log(nombreResultat);
+                }
             }
-        });
+        }
+        );
     }
 }
 //! bouton gomme
@@ -139,7 +165,15 @@ egal.addEventListener('click', () => {
     point.disabled = false;
     heure.disabled = false;
     if (nombreSaisie.textContent !== "") {
-        arguments.push(Number(nombreSaisie.textContent));
+        if (!nombreSaisie.textContent.includes('h')) {
+            arguments.push(Number(nombreSaisie.textContent));
+        }
+        else {
+            let bbb = nombreSaisie.textContent.split('h')
+            bbb[1] = bbb[1] / 60;
+            let ccc = Number(bbb[0]) + bbb[1];
+            arguments.push(ccc);
+        }
     }
     nombreSaisie.textContent = "";
     while (arguments.length > 1) {
@@ -185,3 +219,4 @@ egal.addEventListener('click', () => {
 clear()
 toucheNombre()
 stockOperator()
+
