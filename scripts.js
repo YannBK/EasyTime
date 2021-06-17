@@ -1,18 +1,20 @@
 
-const btn = document.getElementsByClassName('btn');
-const saisie = document.getElementById('saisie');
-const resultat = document.getElementById('resultat');
+const btn = document.getElementsByClassName('btn')
+const saisie = document.getElementById('saisie')
+const resultat = document.getElementById('resultat')
 const egal = document.getElementById('btnegal')
 const total = document.getElementById('total')
+const heure = document.getElementById('totalheure')
 let nombreTotal = document.createElement('p')
-let nombreSaisie = document.createElement('p');
-const reset = document.getElementById('btnreset');
-const gomme = document.getElementById('btngomme');
-const arguments = [];
-let nombreResultat = document.createElement('p');
-const btno = document.getElementsByClassName('btnOpe');
-const point = document.getElementById('btnpoint');
-const heure = document.getElementById('btnh')
+let nombreTotalHeure = document.createElement('p')
+let nombreSaisie = document.createElement('p')
+const reset = document.getElementById('btnreset')
+const gomme = document.getElementById('btngomme')
+const arguments = []
+let nombreResultat = document.createElement('p')
+const btno = document.getElementsByClassName('btnOpe')
+const point = document.getElementById('btnpoint')
+const btnheure = document.getElementById('btnh')
 
 const calculator = {
     add(a, b) {
@@ -38,7 +40,7 @@ const clear = () => {
     nombreResultat.textContent = "";
     nombreTotal.textContent = "";
     point.disabled = false;
-    heure.disabled = false;
+    btnheure.disabled = false;
     console.log(arguments)
 }
 reset.addEventListener('click', clear);
@@ -70,10 +72,10 @@ const toucheNombre = () => {
         nombreResultat.textContent += `${point.value}`;
         point.disabled = true;
     })
-    heure.addEventListener('click', () => {
-        nombreSaisie.textContent += `${heure.value}`;
-        nombreResultat.textContent += `${heure.value}`;
-        heure.disabled = true;
+    btnheure.addEventListener('click', () => {
+        nombreSaisie.textContent += `${btnheure.value}`;
+        nombreResultat.textContent += `${btnheure.value}`;
+        btnheure.disabled = true;
     })
 }
 
@@ -83,7 +85,7 @@ const stockOperator = () => {
     for (let i = 0; i < btno.length; i++) {
         btno[i].addEventListener("click", () => {
             point.disabled = false;
-            heure.disabled = false;
+            btnheure.disabled = false;
             //stockage valeurs dans array
             if (!nombreSaisie.textContent.includes('h')) {
                 if (nombreTotal.textContent === "") {
@@ -110,7 +112,7 @@ const stockOperator = () => {
                     console.log(nombreResultat);
                 }
             }
-            else { //TODO et là il faut gérer ces p** d'heures
+            else {
                 let bbb = nombreSaisie.textContent.split('h')
                 bbb[1] = bbb[1] / 60;
                 let ccc = Number(bbb[0]) + bbb[1];
@@ -150,7 +152,7 @@ gomme.addEventListener('click', () => {
         point.disabled = false;
     }
     if (nombreSaisie.textContent[pbpoint - 1] === "h") {
-        heure.disabled = false;
+        btnheure.disabled = false;
     }
     let newNombreSaisie = nombreSaisie.textContent.slice(0, -1);
     let newNombreResultat = nombreResultat.textContent.slice(0, -1);
@@ -163,7 +165,7 @@ gomme.addEventListener('click', () => {
 //! opération
 egal.addEventListener('click', () => {
     point.disabled = false;
-    heure.disabled = false;
+    btnheure.disabled = false;
     if (nombreSaisie.textContent !== "") {
         if (!nombreSaisie.textContent.includes('h')) {
             arguments.push(Number(nombreSaisie.textContent));
@@ -208,9 +210,22 @@ egal.addEventListener('click', () => {
         result = arguments[0];
     }
     else {
-        result = arguments[0].toFixed(3);
+        result = arguments[0].toFixed(2);
     }
-    nombreTotal.textContent = `${result}`;
+//TODO ajouter un 0 devant les minutes si <10 min
+    let fff = arguments[0].toFixed(2);
+    let ddd = fff.toString().split(".");
+    ddd[1] = (ddd[1] * 0.6).toFixed(0);
+    console.log(ddd);
+    if (Number(ddd[1])<10){
+        resultHeure =  `${ddd[0]}h0${ddd[1]}`
+    }
+    else{
+    resultHeure = `${ddd[0]}h${ddd[1]}`
+    }
+    nombreTotalHeure.textContent = resultHeure;
+    heure.appendChild(nombreTotalHeure);
+    nombreTotal.textContent = `${result}h`;
     total.appendChild(nombreTotal);
     console.log(arguments);
 })
@@ -220,3 +235,6 @@ clear()
 toucheNombre()
 stockOperator()
 
+
+// let ccc = Number(bbb[0]) + bbb[1];
+// arguments.push(ccc);
