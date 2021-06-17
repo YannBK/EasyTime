@@ -1,0 +1,218 @@
+
+#body{
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    align-self: center;
+}
+
+#titre{
+    margin: 10vh auto;
+    text-align: center;
+}
+
+#generale{
+    display: flex;
+    display: grid;
+    margin:auto;
+    grid-template-rows: 100px;
+    grid-template-areas: 
+    'a';
+    background-color: darkcyan;
+    overflow:hidden;
+    text-overflow: ellipsis; 
+}
+
+#entete{
+    grid-area: a;
+    background-color: #555;
+    height: 100px;
+    border-radius: 5px;
+    position:relative;
+}
+
+#ecran{
+    height: 80%;
+    width: 90%;
+    max-width: 30vw;
+    position:absolute;
+    left:5%;
+    top:10%;
+    word-wrap: break-word;
+    background-color: darkblue;
+    margin:0 auto;
+}
+
+#saisie{ 
+    text-align: right;
+    color: darkgoldenrod;
+}
+#resultat{ 
+    left:0px;
+    color: rgb(236, 179, 35);
+}
+#total{
+    font-size: 1.4rem;
+    color: rgb(252, 216, 127);
+    bottom: 0px;
+}
+
+p{
+    display:block;
+    font-weight: bold;
+    line-height: 20px;
+    margin:auto 5px;
+    overflow:hidden;
+    text-overflow: ellipsis; 
+}
+#clavier{
+    display: flex;
+    display:grid;
+    max-width: 33vw;
+    grid-template-rows: 8vw 8vw 8vw 8vw 8vw;
+    grid-template-columns: 8vw 8vw 8vw 8vw;
+    grid-template-areas: 
+    'b1 b2 b3 b4'
+    'c1 c2 c3 c4'
+    'd1 d2 d3 d4'
+    'e1 e2 e3 e4'
+    'f1 f2 f3 f4';
+    grid-gap: 2px;
+    flex-direction: column;
+    background-color: #444;
+}
+
+.boutons{
+    border-radius: 5px;
+    border: black solid 1px;
+    font-size: 1.8rem; 
+    margin: 0.1rem;
+}
+.boutons:hover{
+    background-color: rgb(206, 206, 206);
+}
+
+#btnreset{
+    grid-area: b1;
+}
+#btnfactoriel{
+    grid-area: b2;
+}
+#btnpuissance{
+    grid-area: b3;
+}
+#btndiviser{
+    grid-area: b4;
+}
+
+#btn7{
+    grid-area: c1;
+}
+#btn8{
+    grid-area: c2;
+}
+#btn9{
+    grid-area: c3;
+}
+#btnmultiplier{
+    grid-area: c4;
+}
+
+#btn4{
+    grid-area: d1;
+}
+#btn5{
+    grid-area: d2;
+}
+#btn6{
+    grid-area: d3;
+}
+#btnsoustraire{
+    grid-area: d4;
+}
+
+#btn1{
+    grid-area: e1;
+}
+#btn2{
+    grid-area: e2;
+}
+#btn3{
+    grid-area: e3;
+}
+#btnadditionner{
+    grid-area: e4;
+}
+
+#btnH{
+    grid-area: f1;
+}
+#btn0{
+    grid-area: f2;
+}
+#btnpoint{
+    grid-area: f3;
+}
+#btnpoint:disabled{
+    background-color: rgb(207, 207, 207);
+}
+#btnegal{
+    grid-area: f4;
+}
+
+
+@media (max-width: 700px){ 
+    #clavier{
+        grid-template-rows: 40vw 40vw 40vw 40vw 40vw;
+        grid-template-columns: 40vw 40vw 40vw 40vw;
+        max-width: 161vw;
+    }
+    #ecran{
+        max-width: 158vw;
+    }
+    .btn{
+        font-size: 0.3rem;
+    }
+    .btnr{
+        font-size: 0.1rem;
+    }
+    .btno{
+        font-size: 0.3rem;
+    }
+    .btnGomme{
+        font-size: 0.3rem;
+    }
+} 
+@media (max-width: 800px){
+    #clavier{
+        grid-template-rows: 13vw 13vw 13vw 13vw 13vw;
+        grid-template-columns: 13vw 13vw 13vw 13vw;
+        max-width: 53vw;
+    }
+    #ecran{
+        max-width: 50vw;
+    }
+    .btn{
+        font-size: 1.2rem;
+    }
+    .btnr{
+        font-size: 1.2rem;
+    }
+    .btno{
+        font-size: 1.2rem;
+    }
+    .btnGomme{
+        font-size: 1.2rem;
+    }
+}
+@media (max-width: 1000px){
+    #clavier{
+        grid-template-rows: 10vw 10vw 10vw 10vw 10vw;
+        grid-template-columns: 10vw 10vw 10vw 10vw;
+        max-width: 41vw
+    }
+    #ecran{
+        max-width: 38vw;
+    }
+}
