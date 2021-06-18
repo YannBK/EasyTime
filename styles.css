@@ -35,7 +35,7 @@
 #ecran{
     height: 80%;
     width: 90%;
-    max-width: 30vw;
+    max-width: 38vw;
     position:absolute;
     left:5%;
     top:10%;
@@ -75,9 +75,9 @@ p{
 #clavier{
     display: flex;
     display:grid;
-    max-width: 33vw;
+    max-width: 41vw;
     grid-template-rows: 8vw 8vw 8vw 8vw 8vw;
-    grid-template-columns: 8vw 8vw 8vw 8vw;
+    grid-template-columns: 10vw 10vw 10vw 10vw;
     grid-template-areas: 
     'b1 b2 b3 b4'
     'c1 c2 c3 c4'
@@ -105,7 +105,7 @@ p{
 #btnfactoriel{
     grid-area: b2;
 }
-#btnpuissance{
+#btnrange{
     grid-area: b3;
 }
 #btndiviser{
@@ -189,6 +189,9 @@ p{
     .btnGomme{
         font-size: 0.3rem;
     }
+    .btnRange{
+        font-size: 1rem;
+    }
 } 
 @media (max-width: 800px){
     #clavier{
@@ -215,10 +218,10 @@ p{
 @media (max-width: 1000px){
     #clavier{
         grid-template-rows: 10vw 10vw 10vw 10vw 10vw;
-        grid-template-columns: 10vw 10vw 10vw 10vw;
-        max-width: 41vw
+        grid-template-columns: 12vw 12vw 12vw 12vw;
+        max-width: 49vw
     }
     #ecran{
-        max-width: 38vw;
+        max-width: 49vw;
     }
 }

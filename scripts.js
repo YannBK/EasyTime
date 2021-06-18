@@ -1,20 +1,22 @@
 
-const btn = document.getElementsByClassName('btn')
-const saisie = document.getElementById('saisie')
-const resultat = document.getElementById('resultat')
-const egal = document.getElementById('btnegal')
-const total = document.getElementById('total')
-const heure = document.getElementById('totalheure')
-let nombreTotal = document.createElement('p')
-let nombreTotalHeure = document.createElement('p')
-let nombreSaisie = document.createElement('p')
-const reset = document.getElementById('btnreset')
-const gomme = document.getElementById('btngomme')
 const arguments = []
-let nombreResultat = document.createElement('p')
+const btn = document.getElementsByClassName('btn')
+const egal = document.getElementById('btnegal')
 const btno = document.getElementsByClassName('btnOpe')
 const point = document.getElementById('btnpoint')
 const btnheure = document.getElementById('btnh')
+const reset = document.getElementById('btnreset')
+const gomme = document.getElementById('btngomme')
+const range = document.getElementById('btnrange')
+
+const total = document.getElementById('total')
+let nombreTotal = document.createElement('p')
+const heure = document.getElementById('totalheure')
+let nombreTotalHeure = document.createElement('p')
+const saisie = document.getElementById('saisie')
+let afficheSaisie = document.createElement('p')
+const resultat = document.getElementById('resultat')
+let afficheOperation = document.createElement('p')
 
 const calculator = {
     add(a, b) {
@@ -29,6 +31,14 @@ const calculator = {
     multiply(a, b) {
         return a * b;
     },
+    range(a, b) {
+        if(a < b){
+            return b - a;
+        }
+        else{
+            return 24-a+b;
+        }
+    }
 }
 
 //! bouton reset
@@ -36,9 +46,10 @@ const clear = () => {
     while (arguments.length > 0) {
         arguments.pop();
     }
-    nombreSaisie.textContent = "";
-    nombreResultat.textContent = "";
+    afficheSaisie.textContent = "";
+    afficheOperation.textContent = "";
     nombreTotal.textContent = "";
+    nombreTotalHeure.textContent = "";
     point.disabled = false;
     btnheure.disabled = false;
     console.log(arguments)
@@ -49,13 +60,13 @@ reset.addEventListener('click', clear);
 const toucheNombre = () => {
     for (let i = 0; i < btn.length; i++) {
         function affiche() {
-            nombreSaisie.classList.add("para"); //? c'est quoi cette classe
+            afficheSaisie.classList.add("para"); //TODO c'est quoi cette classe ?
             //affichage de la saisie
-            nombreSaisie.textContent += `${btn[i].value}`;
-            saisie.appendChild(nombreSaisie);
-            nombreResultat.textContent += `${btn[i].value}`;
-            resultat.appendChild(nombreResultat);
-            console.log(nombreSaisie);
+            afficheSaisie.textContent += `${btn[i].value}`;
+            saisie.appendChild(afficheSaisie);
+            afficheOperation.textContent += `${btn[i].value}`;
+            resultat.appendChild(afficheOperation);
+            console.log(afficheSaisie);
         }
         btn[i].addEventListener("click", () => {
             if (nombreTotal.textContent !== "") {
@@ -68,13 +79,13 @@ const toucheNombre = () => {
         });
     }
     point.addEventListener('click', () => {
-        nombreSaisie.textContent += `${point.value}`;
-        nombreResultat.textContent += `${point.value}`;
+        afficheSaisie.textContent += `${point.value}`;
+        afficheOperation.textContent += `${point.value}`;
         point.disabled = true;
     })
     btnheure.addEventListener('click', () => {
-        nombreSaisie.textContent += `${btnheure.value}`;
-        nombreResultat.textContent += `${btnheure.value}`;
+        afficheSaisie.textContent += `${btnheure.value}`;
+        afficheOperation.textContent += `${btnheure.value}`;
         btnheure.disabled = true;
     })
 }
@@ -87,57 +98,57 @@ const stockOperator = () => {
             point.disabled = false;
             btnheure.disabled = false;
             //stockage valeurs dans array
-            if (!nombreSaisie.textContent.includes('h')) {
+            if (!afficheSaisie.textContent.includes('h')) {
                 if (nombreTotal.textContent === "") {
-                    arguments.push(Number(nombreSaisie.textContent));
+                    arguments.push(Number(afficheSaisie.textContent));
                     arguments.push(btno[i].value);
                     //affichage de l'opération
-                    nombreResultat.textContent += ` ${btno[i].value} `;
-                    resultat.appendChild(nombreResultat);
+                    afficheOperation.textContent += ` ${btno[i].value} `;
+                    resultat.appendChild(afficheOperation);
                     //réinitialisation saisie
-                    nombreSaisie.textContent = "";
+                    afficheSaisie.textContent = "";
                     console.log(arguments);
-                    console.log(nombreResultat);
+                    console.log(afficheOperation);
                 }
                 else {
                     nombreTotal.textContent = "";
                     total.appendChild(nombreTotal);
                     arguments.push(btno[i].value);
                     //affichage de l'opération
-                    nombreResultat.textContent = `${arguments[0]} ${btno[i].value} `;
-                    resultat.appendChild(nombreResultat);
+                    afficheOperation.textContent = `${arguments[0]} ${btno[i].value} `;
+                    resultat.appendChild(afficheOperation);
                     //réinitialisation saisie
-                    nombreSaisie.textContent = "";
+                    afficheSaisie.textContent = "";
                     console.log(arguments);
-                    console.log(nombreResultat);
+                    console.log(afficheOperation);
                 }
             }
             else {
-                let bbb = nombreSaisie.textContent.split('h')
+                let bbb = afficheSaisie.textContent.split('h')
                 bbb[1] = bbb[1] / 60;
                 let ccc = Number(bbb[0]) + bbb[1];
                 if (nombreTotal.textContent === "") {
                     arguments.push(ccc);
                     arguments.push(btno[i].value);
                     //affichage de l'opération
-                    nombreResultat.textContent += ` ${btno[i].value} `;
-                    resultat.appendChild(nombreResultat);
+                    afficheOperation.textContent += ` ${btno[i].value} `;
+                    resultat.appendChild(afficheOperation);
                     //réinitialisation saisie
-                    nombreSaisie.textContent = "";
+                    afficheSaisie.textContent = "";
                     console.log(arguments);
-                    console.log(nombreResultat);
+                    console.log(afficheOperation);
                 }
                 else {
                     nombreTotal.textContent = "";
                     total.appendChild(nombreTotal);
                     arguments.push(btno[i].value);
                     //affichage de l'opération
-                    nombreResultat.textContent = `${arguments[0]} ${btno[i].value} `;
-                    resultat.appendChild(nombreResultat);
+                    afficheOperation.textContent = `${arguments[0]} ${btno[i].value} `;
+                    resultat.appendChild(afficheOperation);
                     //réinitialisation saisie
-                    nombreSaisie.textContent = "";
+                    afficheSaisie.textContent = "";
                     console.log(arguments);
-                    console.log(nombreResultat);
+                    console.log(afficheOperation);
                 }
             }
         }
@@ -147,38 +158,44 @@ const stockOperator = () => {
 //! bouton gomme
 
 gomme.addEventListener('click', () => {
-    let pbpoint = nombreSaisie.textContent.length;
-    if (nombreSaisie.textContent[pbpoint - 1] === ".") {
+    let pbpoint = afficheSaisie.textContent.length;
+    if (afficheSaisie.textContent[pbpoint - 1] === ".") {
         point.disabled = false;
     }
-    if (nombreSaisie.textContent[pbpoint - 1] === "h") {
+    if (afficheSaisie.textContent[pbpoint - 1] === "h") {
         btnheure.disabled = false;
     }
-    let newNombreSaisie = nombreSaisie.textContent.slice(0, -1);
-    let newNombreResultat = nombreResultat.textContent.slice(0, -1);
-    // console.log(newNombreSaisie)
-    nombreSaisie.textContent = `${newNombreSaisie}`
-    nombreResultat.textContent = `${newNombreResultat}`
-    // console.log(newNombreSaisie)
+    let newafficheSaisie = afficheSaisie.textContent.slice(0, -1);
+    let newafficheOperation = afficheOperation.textContent.slice(0, -1);
+    // console.log(newafficheSaisie)
+    afficheSaisie.textContent = `${newafficheSaisie}`
+    afficheOperation.textContent = `${newafficheOperation}`
+    // console.log(newafficheSaisie)
 })
 
 //! opération
 egal.addEventListener('click', () => {
     point.disabled = false;
     btnheure.disabled = false;
-    if (nombreSaisie.textContent !== "") {
-        if (!nombreSaisie.textContent.includes('h')) {
-            arguments.push(Number(nombreSaisie.textContent));
+    if (afficheSaisie.textContent !== "") {
+        if (!afficheSaisie.textContent.includes('h')) {
+            arguments.push(Number(afficheSaisie.textContent));
         }
         else {
-            let bbb = nombreSaisie.textContent.split('h')
+            let bbb = afficheSaisie.textContent.split('h')
             bbb[1] = bbb[1] / 60;
             let ccc = Number(bbb[0]) + bbb[1];
             arguments.push(ccc);
         }
     }
-    nombreSaisie.textContent = "";
+    afficheSaisie.textContent = "";
     while (arguments.length > 1) {
+        if (arguments.indexOf("r") > 0) {
+            let k = arguments.indexOf("r");
+            let j = arguments[k - 1];
+            let l = arguments[k + 1];
+            arguments.splice(k - 1, 3, calculator.range(j, l))
+        }
         if (arguments.indexOf("/") > 0) {
             let k = arguments.indexOf("/");
             let j = arguments[k - 1];
@@ -204,7 +221,7 @@ egal.addEventListener('click', () => {
             arguments.splice(k - 1, 3, calculator.add(j, l))
         }
     }
-    nombreResultat.textContent += ` ${egal.value}`;
+    afficheOperation.textContent += ` ${egal.value}`;
     let result;
     if (Number.isInteger(arguments[0])) {
         result = arguments[0];
