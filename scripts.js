@@ -4,19 +4,24 @@ const btn = document.getElementsByClassName('btn')
 const egal = document.getElementById('btnegal')
 const btno = document.getElementsByClassName('btnOpe')
 const point = document.getElementById('btnpoint')
-const btnheure = document.getElementById('btnh')
+const btnH = document.getElementById('btnh')
 const reset = document.getElementById('btnreset')
 const gomme = document.getElementById('btngomme')
 const range = document.getElementById('btnrange')
 
 const total = document.getElementById('total')
-let nombreTotal = document.createElement('p')
+let nbTotal = document.createElement('p')
 const heure = document.getElementById('totalheure')
-let nombreTotalHeure = document.createElement('p')
+let nbTotalH = document.createElement('p')
 const saisie = document.getElementById('saisie')
-let afficheSaisie = document.createElement('p')
-const resultat = document.getElementById('resultat')
-let afficheOperation = document.createElement('p')
+let affSaisie = document.createElement('p')
+const calcul = document.getElementById('calcul')
+let affCalc = document.createElement('p')
+
+const newTotal = document.getElementById('newTotal')
+let newNbTotal = document.createElement('p')
+const newHeure = document.getElementById('newTotalheure')
+let newNbTotalH = document.createElement('p')
 
 const calculator = {
     add(a, b) {
@@ -32,44 +37,57 @@ const calculator = {
         return a * b;
     },
     range(a, b) {
-        if(a < b){
+        if (a < b) {
             return b - a;
         }
-        else{
-            return 24-a+b;
+        else {
+            return 24 - a + b;
         }
     }
 }
 
-//! bouton reset 
+//* bouton reset 
 const clear = () => {
     while (arguments.length > 0) {
         arguments.pop();
     }
-    afficheSaisie.textContent = "";
-    afficheOperation.textContent = "";
-    nombreTotal.textContent = "";
-    nombreTotalHeure.textContent = "";
+    affSaisie.textContent = "";
+    affCalc.textContent = "";
+    nbTotal.textContent = "";
+    nbTotalH.textContent = "";
+    newNbTotal.textContent = "";
+    newNbTotalH.textContent = "";
     point.disabled = false;
-    btnheure.disabled = false;
-    console.log(arguments)
+    btnH.disabled = false;
 }
 
+//* bouton gomme
+const gommer = () => {
+    let pbpoint = affSaisie.textContent.length;
+    if (affSaisie.textContent[pbpoint - 1] === ".") {
+        point.disabled = false;
+    }
+    if (affSaisie.textContent[pbpoint - 1] === "h") {
+        btnH.disabled = false;
+    }
+    let newaffSaisie = affSaisie.textContent.slice(0, -1);
+    let newaffCalc = affCalc.textContent.slice(0, -1);
+    affSaisie.textContent = `${newaffSaisie}`
+    affCalc.textContent = `${newaffCalc}`
+}
 
-//! affichage et génération du nombre1
+//* affichage et génération du nombre1
 const toucheNombre = () => {
     for (let i = 0; i < btn.length; i++) {
         function affiche() {
-            afficheSaisie.classList.add("para"); //TODO c'est quoi cette classe ?
-            //affichage de la saisie
-            afficheSaisie.textContent += `${btn[i].value}`;
-            saisie.appendChild(afficheSaisie);
-            afficheOperation.textContent += `${btn[i].value}`;
-            resultat.appendChild(afficheOperation);
-            console.log(afficheSaisie);
+            affSaisie.textContent += `${btn[i].value}`;
+            saisie.appendChild(affSaisie);
+            affCalc.textContent += `${btn[i].value}`;
+            calcul.appendChild(affCalc);
+            console.log(affSaisie);
         }
         btn[i].addEventListener("click", () => {
-            if (nombreTotal.textContent !== "") {
+            if (nbTotal.textContent !== "") {
                 clear();
                 affiche()
             }
@@ -79,178 +97,90 @@ const toucheNombre = () => {
         });
     }
     point.addEventListener('click', () => {
-        afficheSaisie.textContent += `${point.value}`;
-        afficheOperation.textContent += `${point.value}`;
+        affSaisie.textContent += `${point.value}`;
+        affCalc.textContent += `${point.value}`;
         point.disabled = true;
+        btnH.disabled = true;
     })
-    btnheure.addEventListener('click', () => {
-        afficheSaisie.textContent += `${btnheure.value}`;
-        afficheOperation.textContent += `${btnheure.value}`;
-        btnheure.disabled = true;
+    btnH.addEventListener('click', () => {
+        affSaisie.textContent += `${btnH.value}`;
+        affCalc.textContent += `${btnH.value}`;
+        btnH.disabled = true;
+        point.disabled = true;
     })
 }
 
 //! stockage des nombres et opérateurs dans un array
-//TODO ça marche essayer de fonctionnaliser
-// const stockOperator = () => {
-//     for (let i = 0; i < btno.length; i++) {
-//         btno[i].addEventListener("click", () => {
-//             point.disabled = false;
-//             btnheure.disabled = false;
-//             //stockage valeurs dans array
-//             if (!afficheSaisie.textContent.includes('h')) {
-//                 if (nombreTotal.textContent === "") {
-//                     arguments.push(Number(afficheSaisie.textContent));
-//                     arguments.push(btno[i].value);
-//                     //affichage de l'opération
-//                     afficheOperation.textContent += ` ${btno[i].value} `;
-//                     resultat.appendChild(afficheOperation);
-//                     //réinitialisation saisie
-//                     afficheSaisie.textContent = "";
-//                     console.log(arguments);
-//                     console.log(afficheOperation);
-//                 }
-//                 else {
-//                     nombreTotal.textContent = "";
-//                     total.appendChild(nombreTotal);
-//                     arguments.push(btno[i].value);
-//                     //affichage de l'opération
-//                     afficheOperation.textContent = `${arguments[0]} ${btno[i].value} `;
-//                     resultat.appendChild(afficheOperation);
-//                     //réinitialisation saisie
-//                     afficheSaisie.textContent = "";
-//                     console.log(arguments);
-//                     console.log(afficheOperation);
-//                 }
-//             }
-//             else {
-//                 let bbb = afficheSaisie.textContent.split('h')
-//                 bbb[1] = bbb[1] / 60;
-//                 let ccc = Number(bbb[0]) + bbb[1];
-//                 if (nombreTotal.textContent === "") {
-//                     arguments.push(ccc);
-//                     arguments.push(btno[i].value);
-//                     //affichage de l'opération
-//                     afficheOperation.textContent += ` ${btno[i].value} `;
-//                     resultat.appendChild(afficheOperation);
-//                     //réinitialisation saisie
-//                     afficheSaisie.textContent = "";
-//                     console.log(arguments);
-//                     console.log(afficheOperation);
-//                 }
-//                 else {
-//                     nombreTotal.textContent = "";
-//                     total.appendChild(nombreTotal);
-//                     arguments.push(btno[i].value);
-//                     //affichage de l'opération
-//                     afficheOperation.textContent = `${arguments[0]} ${btno[i].value} `;
-//                     resultat.appendChild(afficheOperation);
-//                     //réinitialisation saisie
-//                     afficheSaisie.textContent = "";
-//                     console.log(arguments);
-//                     console.log(afficheOperation);
-//                 }
-//             }
-//         }
-//         );
-//     }
-// }
-//TODO essai
-const btbts = document.querySelectorAll('.btnOpe')
-// const stockOperator = () => {
-        btbts.forEach(btbt => btbt.addEventListener("click", () => {
-            point.disabled = false;
-            btnheure.disabled = false;
-            //stockage valeurs dans array
-            if (!afficheSaisie.textContent.includes('h')) {
-                if (nombreTotal.textContent === "") {
-                    arguments.push(Number(afficheSaisie.textContent));
-                    arguments.push(btbt.value);
-                    //affichage de l'opération
-                    afficheOperation.textContent += ` ${btbt.value} `;
-                    resultat.appendChild(afficheOperation);
-                    //réinitialisation saisie
-                    afficheSaisie.textContent = "";
-                    console.log(arguments);
-                    console.log(afficheOperation);
-                }
-                else {
-                    nombreTotal.textContent = "";
-                    total.appendChild(nombreTotal);
-                    arguments.push(btbt.value);
-                    //affichage de l'opération
-                    afficheOperation.textContent = `${arguments[0]} ${btbt.value} `;
-                    resultat.appendChild(afficheOperation);
-                    //réinitialisation saisie
-                    afficheSaisie.textContent = "";
-                    console.log(arguments);
-                    console.log(afficheOperation);
-                }
-            }
-            else {
-                let bbb = afficheSaisie.textContent.split('h')
-                bbb[1] = bbb[1] / 60;
-                let ccc = Number(bbb[0]) + bbb[1];
-                if (nombreTotal.textContent === "") {
-                    arguments.push(ccc);
-                    arguments.push(btbt.value);
-                    //affichage de l'opération
-                    afficheOperation.textContent += ` ${btbt.value} `;
-                    resultat.appendChild(afficheOperation);
-                    //réinitialisation saisie
-                    afficheSaisie.textContent = "";
-                    console.log(arguments);
-                    console.log(afficheOperation);
-                }
-                else {
-                    nombreTotal.textContent = "";
-                    total.appendChild(nombreTotal);
-                    arguments.push(btbt.value);
-                    //affichage de l'opération
-                    afficheOperation.textContent = `${arguments[0]} ${btbt.value} `;
-                    resultat.appendChild(afficheOperation);
-                    //réinitialisation saisie
-                    afficheSaisie.textContent = "";
-                    console.log(arguments);
-                    console.log(afficheOperation);
-                }
-            }
-        }
-    ))
-    // }
-//! bouton gomme
-const gommer =  () => {
-    let pbpoint = afficheSaisie.textContent.length;
-    if (afficheSaisie.textContent[pbpoint - 1] === ".") {
-        point.disabled = false;
+//*prévenir l'utilisateur que le format d'heure est incongru
+const erreurSaisie = (arr) => {
+    if(arr[1].length === 1 || arr[1].length > 2){
+    alert(`${affSaisie.textContent} ... êtes-vous sûr(e) ? Je ne répond pas du résultat ;)`)
     }
-    if (afficheSaisie.textContent[pbpoint - 1] === "h") {
-        btnheure.disabled = false;
-    }
-    let newafficheSaisie = afficheSaisie.textContent.slice(0, -1);
-    let newafficheOperation = afficheOperation.textContent.slice(0, -1);
-    // console.log(newafficheSaisie)
-    afficheSaisie.textContent = `${newafficheSaisie}`
-    afficheOperation.textContent = `${newafficheOperation}`
-    // console.log(newafficheSaisie)
 }
+
+//*stockage, affichage, réinitialisation
+const firstOp = (x) => {
+    arguments.push(x.value);
+    affCalc.textContent += ` ${x.value} `;
+    calcul.appendChild(affCalc);
+    affSaisie.textContent = "";
+}
+
+const noFirstOp = (x) => {
+    nbTotal.textContent = "";
+    total.appendChild(nbTotal);
+    arguments.push(x.value);
+    affCalc.textContent = `${arguments[0]} ${x.value} `;
+    calcul.appendChild(affCalc);
+    affSaisie.textContent = "";
+}
+
+const btbts = document.querySelectorAll('.btnOpe')
+btbts.forEach(btbt => btbt.addEventListener("click", () => {
+    point.disabled = false;
+    btnH.disabled = false;
+    if (!affSaisie.textContent.includes('h')) {
+        if (nbTotal.textContent === "") {
+            arguments.push(Number(affSaisie.textContent));
+            firstOp(btbt);
+        }
+        else {
+            noFirstOp(btbt);
+        }
+    }
+    else {
+        let bbb = affSaisie.textContent.split('h')
+        erreurSaisie(bbb);
+        bbb[1] = bbb[1] / 60;
+        let ccc = Number(bbb[0]) + bbb[1];
+        if (nbTotal.textContent === "") {
+            arguments.push(ccc);
+            firstOp(btbt);
+        }
+        else {
+            noFirstOp(btbt);
+        }
+    }
+}
+))
 
 //! opération
 egal.addEventListener('click', () => {
     point.disabled = false;
-    btnheure.disabled = false;
-    if (afficheSaisie.textContent !== "") {
-        if (!afficheSaisie.textContent.includes('h')) {
-            arguments.push(Number(afficheSaisie.textContent));
+    btnH.disabled = false;
+    if (affSaisie.textContent !== "") {
+        if (!affSaisie.textContent.includes('h')) {
+            arguments.push(Number(affSaisie.textContent));
         }
         else {
-            let bbb = afficheSaisie.textContent.split('h')
+            let bbb = affSaisie.textContent.split('h')
+            erreurSaisie(bbb);
             bbb[1] = bbb[1] / 60;
             let ccc = Number(bbb[0]) + bbb[1];
             arguments.push(ccc);
         }
     }
-    afficheSaisie.textContent = "";
+    affSaisie.textContent = "";
     while (arguments.length > 1) {
         if (arguments.indexOf("r") > 0) {
             let k = arguments.indexOf("r");
@@ -283,7 +213,7 @@ egal.addEventListener('click', () => {
             arguments.splice(k - 1, 3, calculator.add(j, l))
         }
     }
-    afficheOperation.textContent += ` ${egal.value}`;
+    affCalc.textContent += ` ${egal.value}`;
     let result;
     if (Number.isInteger(arguments[0])) {
         result = arguments[0];
@@ -291,35 +221,33 @@ egal.addEventListener('click', () => {
     else {
         result = arguments[0].toFixed(2);
     }
-//TODO ajouter un 0 devant les minutes si <10 min
     let fff = arguments[0].toFixed(2);
     let ddd = fff.toString().split(".");
     ddd[1] = (ddd[1] * 0.6).toFixed(0);
-    console.log(ddd);
-    if (Number(ddd[1])<10){
-        resultHeure =  `${ddd[0]}h0${ddd[1]}`
+    if (Number(ddd[1]) < 10) {
+        resultHeure = `${ddd[0]}h0${ddd[1]}`
     }
-    else{
-    resultHeure = `${ddd[0]}h${ddd[1]}`
+    else {
+        resultHeure = `${ddd[0]}h${ddd[1]}`
     }
-    nombreTotalHeure.textContent = resultHeure;
-    heure.appendChild(nombreTotalHeure);
-    nombreTotal.textContent = `${result}h`;
-    total.appendChild(nombreTotal);
-    console.log(arguments);
+    nbTotalH.textContent = resultHeure;
+    heure.appendChild(nbTotalH);
+    nbTotal.textContent = `${result}h`;
+    total.appendChild(nbTotal);
+    newNbTotalH.textContent = resultHeure;
+    newHeure.appendChild(newNbTotalH);
+    newNbTotal.textContent = `${result}h`;
+    newTotal.appendChild(newNbTotal);
 })
 
 gomme.addEventListener('click', gommer)
 reset.addEventListener('click', clear);
 clear()
 toucheNombre()
-// stockOperator()
 
-window.addEventListener('keydown', function(e){
-    const keys = document.querySelector(`button[data-key="${e.keyCode}"]`);
-    console.log(keys.value)
 
-})
-
-// let ccc = Number(bbb[0]) + bbb[1];
-// arguments.push(ccc);
+//TODO support clavier
+// window.addEventListener('keydown', function(e){
+//     const keys = document.querySelector(`button[data-key="${e.keyCode}"]`);
+//     console.log(keys.value)
+// })

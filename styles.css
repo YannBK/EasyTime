@@ -2,6 +2,7 @@
 #main{
     display: flex;
     justify-content: center;
+text-align: center;
 }
 #titre{
     margin: 8vh auto 6vh auto;
@@ -10,7 +11,7 @@
 #generale{
     display: flex;
     display: grid;
-    margin:auto;
+    margin: auto;
     width: 70vw;
     height: 110vw;
     max-width: 450px;
@@ -19,7 +20,7 @@
     grid-template-areas: 
     'a';
     background-color: #555;
-    overflow:hidden;
+    overflow: hidden;
     text-overflow: ellipsis; 
 }
 #entete{
@@ -29,30 +30,32 @@
     height: 100px;
     max-height: 100px;
     background-color: #555;
-    position:relative;
+    position: relative;
 }
 #ecran{
     width: 90%;
     height: 80%;
-    position:absolute;
-    left:5%;
-    top:10%;
+    position: absolute;
+    left: 5%;
+    top: 10%;
     word-wrap: break-word;
     background-color: darkblue;
-    margin:0 auto;
+    margin: 0 auto;
+    overflow: hidden;
+    text-overflow: ellipsis; 
 }
 #saisie{ 
     text-align: right;
-    color: darkgoldenrod;
+    color: rgb(250, 201, 78);
 }
-#resultat{ 
-    left:0px;
-    color: rgb(236, 179, 35);
+#calcul{ 
+    left: 0px;
+    color: rgb(250, 201, 78);
 }
 #total{
     text-align: left;
     font-size: 1.4rem;
-    color: rgb(252, 216, 127);
+    color: rgb(255, 183, 0);
     bottom: 0px;
 }
 #totalheure{
@@ -62,16 +65,32 @@
     bottom: 0px;
 }
 p{
-    display:block;
+    display: block;
     font-weight: bold;
     line-height: 20px;
-    margin:auto 5px;
-    overflow:hidden;
+    margin: auto 5px;
+    overflow: hidden;
     text-overflow: ellipsis; 
+}
+#lader{
+    text-align: center;
+}
+.newP{
+    display: inline-block;
+    font-weight: bold;
+    line-height: 20px;
+    font-size: 1.4rem;
+    margin: 20px auto;
+}
+#newTotal{
+    color: rgb(255, 123, 0);
+}
+#newTotalheure{
+    color: rgb(79, 172, 17);
 }
 #clavier{
     display: flex;
-    display:grid;
+    display: grid;
     grid-template-rows: 19.8% 19.8% 19.8% 19.8% 19.8%;
     grid-template-columns: 24.5% 24.5% 24.5% 24.5%;
     width: 70vw;
@@ -156,13 +175,10 @@ p{
 #btnpoint{
     grid-area: f3;
 }
-#btnpoint:disabled{
-    background-color: rgb(207, 207, 207);
-}
 #btnegal{
     grid-area: f4;
 }
-
+/* ----------------------- media -----------------*/
 @media (max-width: 500px){ 
     .boutons{
         font-size: 1.3rem;
