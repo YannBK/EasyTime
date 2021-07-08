@@ -74,6 +74,7 @@ p{
 }
 #lader{
     text-align: center;
+    display: none;
 }
 .newP{
     display: inline-block;

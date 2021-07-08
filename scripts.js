@@ -22,6 +22,7 @@ const newTotal = document.getElementById('newTotal')
 let newNbTotal = document.createElement('p')
 const newHeure = document.getElementById('newTotalheure')
 let newNbTotalH = document.createElement('p')
+const lader = document.getElementById('lader')
 
 const calculator = {
     add(a, b) {
@@ -57,6 +58,7 @@ const clear = () => {
     nbTotalH.textContent = "";
     newNbTotal.textContent = "";
     newNbTotalH.textContent = "";
+    lader.style.display = 'none';
     point.disabled = false;
     btnH.disabled = false;
 }
@@ -234,6 +236,7 @@ egal.addEventListener('click', () => {
     heure.appendChild(nbTotalH);
     nbTotal.textContent = `${result}h`;
     total.appendChild(nbTotal);
+    lader.style.display = 'block';
     newNbTotalH.textContent = resultHeure;
     newHeure.appendChild(newNbTotalH);
     newNbTotal.textContent = `${result}h`;
