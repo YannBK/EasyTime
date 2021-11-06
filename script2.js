@@ -1,6 +1,8 @@
 
-const arguments = []
+let arguments = [];
+//boutons
 const btn = document.getElementsByClassName('btn')
+const btnA = document.getElementsByClassName('btnA')
 const egal = document.getElementById('btnegal')
 const btno = document.getElementsByClassName('btnOpe')
 const point = document.getElementById('btnpoint')
@@ -8,7 +10,7 @@ const btnH = document.getElementById('btnh')
 const reset = document.getElementById('btnreset')
 const gomme = document.getElementById('btngomme')
 const range = document.getElementById('btnrange')
-
+//affichage écran
 const total = document.getElementById('total')
 let affTotal = document.createElement('p')
 const heure = document.getElementById('totalheure')
@@ -17,13 +19,13 @@ const saisie = document.getElementById('saisie')
 let affSaisie = document.createElement('p')
 const calcul = document.getElementById('calcul')
 let affCalc = document.createElement('p')
-
+//affichage sous calculette
 const newTotal = document.getElementById('newTotal')
 let newAffTotal = document.createElement('p')
 const newHeure = document.getElementById('newTotalheure')
 let newAffTotalH = document.createElement('p')
 const lader = document.getElementById('lader')
-
+//objet calculatrice
 const calculator = {
     add(a, b) {
         return a + b;
@@ -47,7 +49,7 @@ const calculator = {
     }
 }
 
-//* bouton reset 
+// bouton reset 
 const clear = () => {
     while (arguments.length > 0) {
         arguments.pop();
@@ -63,128 +65,107 @@ const clear = () => {
     btnH.disabled = false;
 }
 
-//* bouton gomme
-const gommer = () => { //TODO il faut qu'il ait un impact sur arguments, sinon ça sert à rien.
-    // Du coup ce serait peut être plus simple si le programme ne fait rien sauf afficher jusqu'au bouton égal, où là il prends la string tapée et la convertie en nombres, opérateurs, etc, arguments ne se remplit qu'à la toute fin
+// bouton gomme
+const gommer = () => {
     let pbpoint = affSaisie.textContent.length;
-    if (affSaisie.textContent[pbpoint - 1] === "." || affSaisie.textContent[pbpoint - 1] === "h") {
-        point.disabled = false;
-        btnH.disabled = false;
+    let newaffSaisie;
+    let newaffCalc;
+    if (affSaisie.textContent[pbpoint - 1] === " ") {
+        newaffSaisie = affSaisie.textContent.slice(0, -3);
+        newaffCalc = affCalc.textContent.slice(0, -3);
     }
-    let newaffSaisie = affSaisie.textContent.slice(0, -1);
-    let newaffCalc = affCalc.textContent.slice(0, -1);
+    else {
+        if (affSaisie.textContent[pbpoint - 1] === "." || affSaisie.textContent[pbpoint - 1] === "h") {
+            point.disabled = false;
+            btnH.disabled = false;
+        }
+        newaffSaisie = affSaisie.textContent.slice(0, -1);
+        newaffCalc = affCalc.textContent.slice(0, -1);
+    }
     affSaisie.textContent = `${newaffSaisie}`
     affCalc.textContent = `${newaffCalc}`
 }
 
-//* affichage et génération du nombre1
-const toucheNombre = () => {
-    for (let i = 0; i < btn.length; i++) {
-        function affiche() {
-            affSaisie.textContent += `${btn[i].value}`;
-            saisie.appendChild(affSaisie);
-            affCalc.textContent += `${btn[i].value}`;
+// affichage input
+const btbts = document.querySelectorAll('.btnOpe')
+const toucheNombre = () => {    
+    btbts.forEach(btbt => btbt.addEventListener("click", () => {
+        point.disabled = false;
+        btnH.disabled = false;
+        if (affTotal.textContent !== "") { //réutilisation résultat précédent
+            affCalc.textContent = `${affTotalH.textContent}`;
             calcul.appendChild(affCalc);
-            // console.log(affSaisie);
+            affSaisie.textContent = `${affTotalH.textContent}`;
+            saisie.appendChild(affSaisie);
+            affTotal.textContent = "";
+            total.appendChild(affTotal);
+            affTotalH.textContent = "";
+            heure.appendChild(affTotalH);
         }
-        btn[i].addEventListener("click", () => {
+    }))
+    for (let i = 0; i < btnA.length; i++) {
+        function affiche() {
+            affSaisie.textContent += `${btnA[i].value}`;
+            saisie.appendChild(affSaisie);
+            affCalc.textContent += `${btnA[i].value}`;
+            calcul.appendChild(affCalc);
+        }
+        btnA[i].addEventListener("click", () => {
             if (affTotal.textContent !== "") {
                 clear();
                 affiche();
-                console.log(arguments);
             }
             else {
                 affiche();
-                console.log(arguments);
             }
         });
     }
     point.addEventListener('click', () => {
-        affSaisie.textContent += `${point.value}`;
-        affCalc.textContent += `${point.value}`;
         point.disabled = true;
         btnH.disabled = true;
     })
     btnH.addEventListener('click', () => {
-        affSaisie.textContent += `${btnH.value}`;
-        affCalc.textContent += `${btnH.value}`;
         btnH.disabled = true;
         point.disabled = true;
     })
 }
 
-//! stockage des nombres et opérateurs dans un array
-//*prévenir l'utilisateur que le format d'heure est incongru
-const erreurSaisie = (arr) => {
-    if (arr[1].length === 1 || arr[1].length > 2) {
-        alert(`${affSaisie.textContent} ... êtes-vous sûr(e) ? Je ne répond pas du résultat ;)`)
-    }
-}
-
-//*stockage, affichage, réinitialisation
-const firstOp = (x) => {
-    arguments.push(x.value);
-    affCalc.textContent += ` ${x.value} `;
-    calcul.appendChild(affCalc);
-    affSaisie.textContent = "";
-}
-
-const noFirstOp = (x) => {
-    affTotal.textContent = "";
-    total.appendChild(affTotal);
-    arguments.push(x.value);
-    affCalc.textContent = `${arguments[0].toFixed(2)} ${x.value} `;
-    calcul.appendChild(affCalc);
-    affSaisie.textContent = "";
-}
-
-const btbts = document.querySelectorAll('.btnOpe')
-btbts.forEach(btbt => btbt.addEventListener("click", () => {
-    point.disabled = false;
-    btnH.disabled = false;
-    if (!affSaisie.textContent.includes('h')) {
-        if (affTotal.textContent === "") {
-            arguments.push(Number(affSaisie.textContent));
-            firstOp(btbt);
-        }
-        else {
-            noFirstOp(btbt);
+//trouver une lettre
+function findH(str, car) {
+    for (let i = 0; i < str.length; i++) {
+        if (str[i] === car) {
+            return true;
         }
     }
-    else {
-        let bbb = affSaisie.textContent.split('h')
-        erreurSaisie(bbb);
-        bbb[1] = bbb[1] / 60;
-        let ccc = Number(bbb[0]) + bbb[1];
-        if (affTotal.textContent === "") {
-            arguments.push(ccc);
-            firstOp(btbt);
-        }
-        else {
-            noFirstOp(btbt);
-        }
-    }
-    console.log(arguments);
+    return false;
 }
-))
 
-//! opération
+//Opération bouton égal
 egal.addEventListener('click', () => {
     point.disabled = false;
     btnH.disabled = false;
-    if (affSaisie.textContent !== "") {
-        if (!affSaisie.textContent.includes('h')) {
-            arguments.push(Number(affSaisie.textContent));
+    //conversion input en tableau de nombres et d'opérateurs
+    arguments = affSaisie.textContent.split(" ");
+    for (let i = 0; i < arguments.length; i++) {
+        if (findH(arguments[i], "h") == true) {
+            let provisoire = arguments[i].split("h");
+            provisoire[0] = Number(provisoire[0]);
+            provisoire[1] = Number(provisoire[1]) / 60;
+            arguments[i] = provisoire[0] + provisoire[1];
+        }
+        else if (findH(arguments[i], ".") == true) {
+            arguments[i] = Number(arguments[i]);
+        }
+        else if (arguments[i] === "+" || arguments[i] === "-" || arguments[i] === "/"|| arguments[i] === "*"|| arguments[i] === "r") { //flèche double en html : &#x21D4; || &#8660; || &hArr; ET en JS : \u21d4 à mettre pour l'affichage du range
+            arguments[i] = arguments[i];            
         }
         else {
-            let bbb = affSaisie.textContent.split('h')
-            erreurSaisie(bbb);
-            bbb[1] = bbb[1] / 60;
-            let ccc = Number(bbb[0]) + bbb[1];
-            arguments.push(ccc);
+            arguments[i] = Number(arguments[i]);
         }
     }
     affSaisie.textContent = "";
+    console.log(arguments)
+    //utilisation calculatrice
     while (arguments.length > 1) {
         if (arguments.indexOf("r") > 0) {
             let k = arguments.indexOf("r");
@@ -192,31 +173,32 @@ egal.addEventListener('click', () => {
             let l = arguments[k + 1];
             arguments.splice(k - 1, 3, calculator.range(j, l))
         }
-        if (arguments.indexOf("/") > 0) {
+        else if (arguments.indexOf("/") > 0) {
             let k = arguments.indexOf("/");
             let j = arguments[k - 1];
             let l = arguments[k + 1];
             arguments.splice(k - 1, 3, calculator.divide(j, l))
         }
-        if (arguments.indexOf("*") > 0) {
+        else if (arguments.indexOf("*") > 0) {
             let k = arguments.indexOf("*");
             let j = arguments[k - 1];
             let l = arguments[k + 1];
             arguments.splice(k - 1, 3, calculator.multiply(j, l))
         }
-        if (arguments.indexOf("-") > 0) {
+        else if (arguments.indexOf("-") > 0) {
             let k = arguments.indexOf("-");
             let j = arguments[k - 1];
             let l = arguments[k + 1];
             arguments.splice(k - 1, 3, calculator.subtract(j, l))
         }
-        if (arguments.indexOf("+") > 0) {
+        else if (arguments.indexOf("+") > 0) {
             let k = arguments.indexOf("+");
             let j = arguments[k - 1];
             let l = arguments[k + 1];
             arguments.splice(k - 1, 3, calculator.add(j, l))
         }
     }
+    //affichage résultat
     affCalc.textContent += ` ${egal.value}`;
     let result;
     if (Number.isInteger(arguments[0])) {
@@ -245,14 +227,16 @@ egal.addEventListener('click', () => {
     newTotal.appendChild(newAffTotal);
 })
 
+//!prévenir l'utilisateur que le format d'heure est incongru, du coup ça va être un peu plus dur, mais plus efficace si j'y arrive?
+// const erreurSaisie = (arr) => {
+//     if (arr[1].length === 1 || arr[1].length > 2) {
+//         alert(`${affSaisie.textContent} ... êtes-vous sûr(e) ? Je ne répond pas du résultat ;)`)
+//     }
+// }
+
+
 gomme.addEventListener('click', gommer)
 reset.addEventListener('click', clear);
 clear()
 toucheNombre()
 
-
-//TODO support clavier
-// window.addEventListener('keydown', function(e){
-//     const keys = document.querySelector(`button[data-key="${e.keyCode}"]`);
-//     console.log(keys.value)
-// })
