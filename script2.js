@@ -3,13 +3,13 @@ let arguments = [];
 //boutons
 const btn = document.getElementsByClassName('btn')
 const btnA = document.getElementsByClassName('btnA')
-const egal = document.getElementById('btnegal')
+const egal = document.getElementById('btnEgal')
 const btno = document.getElementsByClassName('btnOpe')
-const point = document.getElementById('btnpoint')
-const btnH = document.getElementById('btnh')
+const point = document.getElementById('btnPt')
+const btnH = document.getElementById('btnH')
 const reset = document.getElementById('btnreset')
 const gomme = document.getElementById('btngomme')
-const range = document.getElementById('btnrange')
+const range = document.getElementById('btnRange')
 //affichage écran
 const total = document.getElementById('total')
 let affTotal = document.createElement('p')
@@ -30,7 +30,7 @@ const calculator = {
     add(a, b) {
         return a + b;
     },
-    subtract(a, b) {
+    substract(a, b) {
         return a - b;
     },
     divide(a, b) {
@@ -189,7 +189,7 @@ egal.addEventListener('click', () => {
             let k = arguments.indexOf("-");
             let j = arguments[k - 1];
             let l = arguments[k + 1];
-            arguments.splice(k - 1, 3, calculator.subtract(j, l))
+            arguments.splice(k - 1, 3, calculator.substract(j, l))
         }
         else if (arguments.indexOf("+") > 0) {
             let k = arguments.indexOf("+");
