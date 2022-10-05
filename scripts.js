@@ -1,258 +1,240 @@
 
-const arguments = []
-const btn = document.getElementsByClassName('btn')
-const egal = document.getElementById('btnegal')
-const btno = document.getElementsByClassName('btnOpe')
-const point = document.getElementById('btnpoint')
-const btnH = document.getElementById('btnh')
-const reset = document.getElementById('btnreset')
-const gomme = document.getElementById('btngomme')
-const range = document.getElementById('btnrange')
+class HumanRessources {
 
-const total = document.getElementById('total')
-let affTotal = document.createElement('p')
-const heure = document.getElementById('totalheure')
-let affTotalH = document.createElement('p')
-const saisie = document.getElementById('saisie')
-let affSaisie = document.createElement('p')
-const calcul = document.getElementById('calcul')
-let affCalc = document.createElement('p')
-
-const newTotal = document.getElementById('newTotal')
-let newAffTotal = document.createElement('p')
-const newHeure = document.getElementById('newTotalheure')
-let newAffTotalH = document.createElement('p')
-const lader = document.getElementById('lader')
-
-const calculator = {
-    add(a, b) {
-        return a + b;
-    },
-    subtract(a, b) {
-        return a - b;
-    },
-    divide(a, b) {
-        return a / b;
-    },
-    multiply(a, b) {
-        return a * b;
-    },
-    range(a, b) {
-        if (a < b) {
-            return b - a;
-        }
-        else {
-            return 24 - a + b;
-        }
-    }
-}
-
-//* bouton reset 
-const clear = () => {
-    while (arguments.length > 0) {
-        arguments.pop();
-    }
-    affSaisie.textContent = "";
-    affCalc.textContent = "";
-    affTotal.textContent = "";
-    affTotalH.textContent = "";
-    newAffTotal.textContent = "";
-    newAffTotalH.textContent = "";
-    lader.style.display = 'none';
-    point.disabled = false;
-    btnH.disabled = false;
-}
-
-//* bouton gomme
-const gommer = () => { //TODO il faut qu'il ait un impact sur arguments, sinon ça sert à rien.
-    // Du coup ce serait peut être plus simple si le programme ne fait rien sauf afficher jusqu'au bouton égal, où là il prends la string tapée et la convertie en nombres, opérateurs, etc, arguments ne se remplit qu'à la toute fin
-    let pbpoint = affSaisie.textContent.length;
-    if (affSaisie.textContent[pbpoint - 1] === "." || affSaisie.textContent[pbpoint - 1] === "h") {
-        point.disabled = false;
-        btnH.disabled = false;
-    }
-    let newaffSaisie = affSaisie.textContent.slice(0, -1);
-    let newaffCalc = affCalc.textContent.slice(0, -1);
-    affSaisie.textContent = `${newaffSaisie}`
-    affCalc.textContent = `${newaffCalc}`
-}
-
-//* affichage et génération du nombre1
-const toucheNombre = () => {
-    for (let i = 0; i < btn.length; i++) {
-        function affiche() {
-            affSaisie.textContent += `${btn[i].value}`;
-            saisie.appendChild(affSaisie);
-            affCalc.textContent += `${btn[i].value}`;
-            calcul.appendChild(affCalc);
-            // console.log(affSaisie);
-        }
-        btn[i].addEventListener("click", () => {
-            if (affTotal.textContent !== "") {
-                clear();
-                affiche();
-                console.log(arguments);
+    constructor(){
+        this.equation = [];
+        this.totalDecimal = document.getElementById('total-decimal');
+        this.totalClock = document.getElementById('total-clock');
+        this.userInput = document.getElementById('user-input');
+        this.currentOperation = document.getElementById('current-operation');
+        this.totalText = document.getElementById('total-text');
+        this.calculatorObject = [
+            {
+                sign: "+",
+                operation: (a, b) => a + b
+            },
+            {
+                sign: "-",
+                operation: (a, b) => a - b
+            },
+            {
+                sign: "/",
+                operation: (a, b) => a / b
+            },
+            {
+                sign: "*",
+                operation: (a, b) => a * b
+            },
+            {
+                sign: "r",
+                operation: (a, b) => {
+                    if (a < b) {
+                        return b - a;
+                    }
+                    return 24 - a + b;
+                }
             }
-            else {
-                affiche();
-                console.log(arguments);
+        ];
+    }
+
+    startListening() {
+        const buttons = document.querySelectorAll(".buttons");
+
+        document.addEventListener('keydown', (e)=>{
+            e.preventDefault();
+            let key = e.key;
+            let authorizedKeys = ['0','1','2','3','4','5','6','7','8','9','.','h','+','-','*','/','r','Backspace','Enter','Delete'];
+            if(authorizedKeys.includes(key)) {
+                this.choseAction(key);
+                this.colorButtonsOnKeyboard(key);
             }
         });
+
+        for(let btn of buttons) {
+            btn.addEventListener('click', ()=>{
+                let value = btn.value.trim();
+                this.choseAction(value);
+            });
+        }
     }
-    point.addEventListener('click', () => {
-        affSaisie.textContent += `${point.value}`;
-        affCalc.textContent += `${point.value}`;
-        point.disabled = true;
-        btnH.disabled = true;
-    })
-    btnH.addEventListener('click', () => {
-        affSaisie.textContent += `${btnH.value}`;
-        affCalc.textContent += `${btnH.value}`;
-        btnH.disabled = true;
-        point.disabled = true;
-    })
-}
 
-//! stockage des nombres et opérateurs dans un array
-//*prévenir l'utilisateur que le format d'heure est incongru
-const erreurSaisie = (arr) => {
-    if (arr[1].length === 1 || arr[1].length > 2) {
-        alert(`${affSaisie.textContent} ... êtes-vous sûr(e) ? Je ne répond pas du résultat ;)`)
+    choseAction(value) {
+        switch(value) {
+            case '.':
+            case 'h':
+                this.disableSeparators();
+                this.updateScreenOnButtons(value);
+                break;
+            case 'Backspace':
+                this.erase();
+                break;
+            case 'Delete':
+                this.clear();
+                break;
+            case 'Enter':
+                this.doMath();
+                break;
+            case '+':
+            case '-':
+            case '*':
+            case '/':
+            case 'r':
+                this.updateScreenOnOperator();
+                this.updateScreenOnButtons(`${value}`);
+                break;
+            default:
+                this.updateScreenOnButtons(value);
+        }
     }
-}
 
-//*stockage, affichage, réinitialisation
-const firstOp = (x) => {
-    arguments.push(x.value);
-    affCalc.textContent += ` ${x.value} `;
-    calcul.appendChild(affCalc);
-    affSaisie.textContent = "";
-}
+    updateScreenOnOperator() {
+        this.enableSeparators();
 
-const noFirstOp = (x) => {
-    affTotal.textContent = "";
-    total.appendChild(affTotal);
-    arguments.push(x.value);
-    affCalc.textContent = `${arguments[0].toFixed(2)} ${x.value} `;
-    calcul.appendChild(affCalc);
-    affSaisie.textContent = "";
-}
+        //réutilisation résultat précédent
+        if (this.totalDecimal.textContent !== "") {
+            this.currentOperation.textContent = `${this.totalClock.textContent}`;
+            this.userInput.textContent = `${this.totalClock.textContent}`;
+            this.totalDecimal.textContent = "";
+            this. totalClock.textContent = "";
+        }
+    }
 
-const btbts = document.querySelectorAll('.btnOpe')
-btbts.forEach(btbt => btbt.addEventListener("click", () => {
-    point.disabled = false;
-    btnH.disabled = false;
-    if (!affSaisie.textContent.includes('h')) {
-        if (affTotal.textContent === "") {
-            arguments.push(Number(affSaisie.textContent));
-            firstOp(btbt);
+    updateScreenOnButtons(value) {
+        if (this.totalDecimal.textContent !== "") {
+            this.clear();
+        }
+        let content =`${value}`; 
+        if(isNaN(value) & value != 'h' & value != ".") {
+            content = ` ${value} `;
+        }
+        this.userInput.textContent += content;
+        this.currentOperation.textContent += content;
+    }
+
+    clear() {
+        this.equation = [];
+        
+        this.userInput.textContent = "";
+        this.currentOperation.textContent = "";
+        this.totalClock.textContent = "";
+        this.totalDecimal.textContent = "";
+        this.totalText.textContent = "";
+
+        this.enableSeparators();
+    }
+
+    erase() {
+        let length = this.userInput.textContent.length;
+        let newUserInput;
+        let newCurrentOperation;
+        if (this.userInput.textContent[length - 1] === " ") {
+            newUserInput = this.userInput.textContent.slice(0, -3);
+            newCurrentOperation = this.currentOperation.textContent.slice(0, -3);
+            this.enableSeparators();
         }
         else {
-            noFirstOp(btbt);
+            newUserInput = this.userInput.textContent.slice(0, -1);
+            newCurrentOperation = this.currentOperation.textContent.slice(0, -1);
         }
+        this.userInput.textContent = `${newUserInput}`;
+        this.currentOperation.textContent = `${newCurrentOperation}`;
     }
-    else {
-        let bbb = affSaisie.textContent.split('h')
-        erreurSaisie(bbb);
-        bbb[1] = bbb[1] / 60;
-        let ccc = Number(bbb[0]) + bbb[1];
-        if (affTotal.textContent === "") {
-            arguments.push(ccc);
-            firstOp(btbt);
+
+    disableSeparators() {
+        document.getElementById('btnh').disabled = true;
+        document.getElementById('btnPt').disabled = true;
+    }
+
+    enableSeparators() {
+        document.getElementById('btnh').disabled = false;
+        document.getElementById('btnPt').disabled = false;
+    }
+
+    colorButtonsOnKeyboard(value) {
+        let btn = document.getElementById(`btn${value}`);
+        if(value === "." || value === "+" || value === "-" || value === "*" || value === "/"){
+            btn = document.querySelector(`[data-sign = "${value}"]`);
+        }
+
+        btn.classList.add('btn-enlight');
+        setTimeout(()=>{
+            btn.classList.remove('btn-enlight');
+        }, 200);
+    }
+
+    doMath() {
+        this.enableSeparators();
+        if(this.userInput.textContent === "") {
+            this.clear();
+            return;
+        }
+
+        this.equation = this.convertInputToArray(this.userInput);
+        if(this.equation === "error") {
+            alert("Une erreur de saisie s'est sûrement glissée dans le calcul !");
+            return;// pauvre ;)
+        }
+        let result = this.getResultFromArray(this.equation);
+        let clockResult = this.clockFormat(result);
+
+        this.totalClock.textContent = clockResult;
+        this.totalDecimal.textContent = `${result} h`;
+
+        this.totalText.innerHTML = `
+            <p class="newP">Total : <span class="totalOrange">${result} h</span> ou <span class="totalGreen">${clockResult}</span>`;
+        this.totalText.style.display = 'block';
+    }
+
+    convertInputToArray(input) {
+        let arr = input.textContent.split(" ");
+
+        for (let i = 0; i < arr.length; i++) {
+            if (arr[i].search(new RegExp("h", "g")) != -1) {
+                let temp = arr[i].split("h");
+                if(temp[1].length === 1 || temp[1].length > 2) {
+                    return "error";
+                }
+                temp[0] = Number(temp[0]);
+                temp[1] = Number(temp[1]) / 60;
+                arr[i] = temp[0] + temp[1];
+            }
+            else if (arr[i] === "+" || arr[i] === "-" || arr[i] === "/"|| arr[i] === "*"|| arr[i] === "r") {
+                arr[i] = arr[i];            
+            }
+            else {
+                arr[i] = Number(arr[i]);
+            }
+        }
+        input.textContent = "";
+        return arr;
+    }
+
+    getResultFromArray(arr) {
+        while (arr.length > 1) {
+            for(let op of this.calculatorObject){
+                if (arr.indexOf(op["sign"]) > 0) {
+                    let k = arr.indexOf(op["sign"]);
+                    let j = arr[k - 1];
+                    let l = arr[k + 1];
+                    arr.splice(k - 1, 3, op.operation(j, l));
+                }
+            }
+        }
+        return arr[0].toFixed(2);
+    }
+
+    clockFormat(result) {
+        let clock = result.toString().split(".");
+        clock[1] = (clock[1] * 0.6).toFixed(0);
+
+        if (Number(clock[1]) < 10) {
+            return `${clock[0]}h0${clock[1]}`;
         }
         else {
-            noFirstOp(btbt);
+            return `${clock[0]}h${clock[1]}`;
         }
     }
-    console.log(arguments);
 }
-))
 
-//! opération
-egal.addEventListener('click', () => {
-    point.disabled = false;
-    btnH.disabled = false;
-    if (affSaisie.textContent !== "") {
-        if (!affSaisie.textContent.includes('h')) {
-            arguments.push(Number(affSaisie.textContent));
-        }
-        else {
-            let bbb = affSaisie.textContent.split('h')
-            erreurSaisie(bbb);
-            bbb[1] = bbb[1] / 60;
-            let ccc = Number(bbb[0]) + bbb[1];
-            arguments.push(ccc);
-        }
-    }
-    affSaisie.textContent = "";
-    while (arguments.length > 1) {
-        if (arguments.indexOf("r") > 0) {
-            let k = arguments.indexOf("r");
-            let j = arguments[k - 1];
-            let l = arguments[k + 1];
-            arguments.splice(k - 1, 3, calculator.range(j, l))
-        }
-        if (arguments.indexOf("/") > 0) {
-            let k = arguments.indexOf("/");
-            let j = arguments[k - 1];
-            let l = arguments[k + 1];
-            arguments.splice(k - 1, 3, calculator.divide(j, l))
-        }
-        if (arguments.indexOf("*") > 0) {
-            let k = arguments.indexOf("*");
-            let j = arguments[k - 1];
-            let l = arguments[k + 1];
-            arguments.splice(k - 1, 3, calculator.multiply(j, l))
-        }
-        if (arguments.indexOf("-") > 0) {
-            let k = arguments.indexOf("-");
-            let j = arguments[k - 1];
-            let l = arguments[k + 1];
-            arguments.splice(k - 1, 3, calculator.subtract(j, l))
-        }
-        if (arguments.indexOf("+") > 0) {
-            let k = arguments.indexOf("+");
-            let j = arguments[k - 1];
-            let l = arguments[k + 1];
-            arguments.splice(k - 1, 3, calculator.add(j, l))
-        }
-    }
-    affCalc.textContent += ` ${egal.value}`;
-    let result;
-    if (Number.isInteger(arguments[0])) {
-        result = arguments[0];
-    }
-    else {
-        result = arguments[0].toFixed(2);
-    }
-    let fff = arguments[0].toFixed(2);
-    let ddd = fff.toString().split(".");
-    ddd[1] = (ddd[1] * 0.6).toFixed(0);
-    if (Number(ddd[1]) < 10) {
-        resultHeure = `${ddd[0]}h0${ddd[1]}`
-    }
-    else {
-        resultHeure = `${ddd[0]}h${ddd[1]}`
-    }
-    affTotalH.textContent = resultHeure;
-    heure.appendChild(affTotalH);
-    affTotal.textContent = `${result}h`;
-    total.appendChild(affTotal);
-    lader.style.display = 'block';
-    newAffTotalH.textContent = resultHeure;
-    newHeure.appendChild(newAffTotalH);
-    newAffTotal.textContent = `${result}h`;
-    newTotal.appendChild(newAffTotal);
-})
-
-gomme.addEventListener('click', gommer)
-reset.addEventListener('click', clear);
-clear()
-toucheNombre()
-
-
-//TODO support clavier
-// window.addEventListener('keydown', function(e){
-//     const keys = document.querySelector(`button[data-key="${e.keyCode}"]`);
-//     console.log(keys.value)
-// })
+const LetsGo = new HumanRessources();
+LetsGo.startListening();

@@ -1,26 +1,92 @@
+:root {
+    --color-bolder: rgb(253, 162, 106);
+    --color-bold: rgb(244,204,166);
+    --color-medium: rgb(244,244,166);
+    --color-light: rgb(204, 253, 170);
+    --color-buttons: rgb(244,244,206);
+    --color-ope: rgb(244,184,146);
+}
 
-#main{
+html, body, div, span,
+h1, h2, h3, h4, h5, h6, p{
+    margin:0;
+    padding:0;
+    border:0;
+    outline:0;
+    font-size:100%;
+    vertical-align:baseline;
+    background:transparent;
+}
+
+body{
     display: flex;
     justify-content: center;
     text-align: center;
+    min-height: 100vh;
+    background-image: url('/pexels-karolina-grabowska-4386370.jpg');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
 }
-h1{
-    margin: 7vh auto 5vh auto;
-    text-align: center;
+h1 {
+    position: relative;
+    height: 88px;
+    margin: 2.5vh auto 2.5vh auto;
+    position: relative;
+    width: 200px;
+    line-height: 44px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(44,44,44);
+    width: 200px;
+    border-radius: 0 44px 0 44px;
+}
+
+h1 a,
+h1 a:visited,
+h1 a:active {
+    width: 200px;
+    padding: 0px;
+    margin: 0px;
+    height: 50%;
+    transition: .8s;
+    color: rgb(44,44,44);
+    background-color: rgb(244,244,226);
+    text-decoration: none;
+    border-radius: 0 0 0 44px;
+}
+
+h1 a:hover {
+    color: rgb(244,244,226);
+    background-color: rgb(44,44,44);
+}
+
+h1 a:first-child {
+    color: rgb(244,244,226);
+    background-color: transparent;
+    border-radius: 0 44px 0 0;
+}
+
+h1 a:first-child:hover {
+    color: rgb(44,44,44);
+    background-color: rgb(244,244,226);
 }
 /* --------------- Calculatrice --------------- */
-#generale{
+#calculator{
     display: flex;
     display: grid;
     margin: auto;
     width: 70vw;
-    height: 110vw;
+    height: 71vh;
     max-width: 450px;
-    max-height: 707px;
+    /* max-height: 666px; */
     grid-template-rows: 100px;
     grid-template-areas: 
     'a';
-    background-color: rgb(20, 65, 68);
+    /* background-color: rgb(20, 65, 68); */
+    background-color: rgb(48, 85, 68, 0.9);
     border-top: rgb(74, 74, 74) solid 5px;
     border-left: rgb(74, 74, 74) solid 5px;
     border-right: rgb(44, 44, 44) solid 5px;
@@ -30,7 +96,7 @@ h1{
     text-overflow: ellipsis; 
 }
 /* --------------- Ecran d'affichage --------------- */
-#entete{
+#calculator-head{
     grid-area: a;
     width: 70vw;
     max-width: 450px;
@@ -38,7 +104,7 @@ h1{
     max-height: 100px;
     position: relative;
 }
-#ecran{
+#calculator-screen{
     width: 90%;
     height: 80%;
     position: relative;
@@ -48,37 +114,41 @@ h1{
     overflow: hidden;
     text-overflow: ellipsis; 
 }
-#saisie{ 
+#user-input{ 
     text-align: right;
-    color: rgb(250, 201, 78);
+    color: rgb(255, 183, 0);
 }
-#calcul{ 
+#current-operation{ 
     left: 0px;
-    color: rgb(250, 201, 78);
+    color: rgb(255, 183, 0);
     margin-bottom: 10px;
 }
-#total{
+#total-decimal{
     text-align: left;
     font-size: 1.4rem;
     color: rgb(255, 183, 0);
     bottom: 0px;
+    font-size: 24px;
 }
-#totalheure{
+#total-clock{
     text-align: right;
     font-size: 1.4rem;
-    color: rgb(119, 201, 65);
+    color: rgb(148, 230, 94);
     bottom: 0px;
+    font-size: 24px;
 }
 p{
     display: block;
     font-weight: bold;
-    line-height: 20px;
+    line-height: 25px;
     margin: auto 5px;
     overflow: hidden;
-    text-overflow: ellipsis; 
+    text-overflow: ellipsis;
+    /* font-size: 88px;avec que de 8 à entrer en input c'est magnifique */
+    font-size: 22px;
 }
 /* --------------- Affichage complémentaire --------------- */
-#lader{
+#total-text{
     text-align: center;
     display: none;
 }
@@ -88,15 +158,18 @@ p{
     line-height: 20px;
     font-size: 1.4rem;
     margin: 20px auto;
+    color: rgb(244,244,226);
 }
-#newTotal{
-    color: rgb(255, 123, 0);
+.totalOrange{
+    color: rgb(255, 183, 0);
+    font-size: 24px;
 }
-#newTotalheure{
-    color: rgb(79, 172, 17);
+.totalGreen{
+    color: rgb(148, 230, 94);
+    font-size: 24px;
 }
 /* --------------- Clavier et boutons --------------- */
-#clavier{
+#calculator-body{
     display: flex;
     display: grid;
     grid-template-rows: 19.8% 19.8% 19.8% 19.8% 19.8%;
@@ -111,39 +184,43 @@ p{
     'f1 f2 f3 f4';
     flex-direction: column;
     justify-content: center;
-    background-color: rgb(94, 94, 94);
+    background-color: rgb(91, 91, 91);
 }
-.boutons{
+.buttons{
     border-radius: 5px;
-    border-top: rgb(153, 153, 153) solid 5px;
-    border-left: rgb(153, 153, 153) solid 5px;
-    border-bottom: rgb(49, 49, 49) solid 5px;
-    border-right: rgb(49, 49, 49) solid 5px;
+    border-top: rgb(152, 152, 152) solid 5px;
+    border-left: rgb(152, 152, 152) solid 5px;
+    border-bottom: rgb(44, 44, 44) solid 5px;
+    border-right: rgb(44, 44, 44) solid 5px;
     font-size: 1.8rem; 
     margin: 0.15rem;
     word-wrap: break-word;
+    background-color: rgb(244,244,226);
+    transition: 0.3s;
 }
-.boutons:hover{
-    background-color: rgb(206, 206, 206);
-}
-.boutons:active{
-    background-color: rgb(180, 180, 180);
-    border: rgb(84, 84, 84) solid 5px;
+.buttons:active{
+    background-color: rgb(204,204,166);
+    border: rgb(66,66,66) solid 5px;
     font-size: 1.7rem; 
 }
-#btnreset{
+
+
+#btnDelete{
     grid-area: b1;
     margin-top: 5px;
 }
-#btngomme{
+#btnBackspace{
     grid-area: b2;
     margin-top: 5px;
 }
-#btnrange{
+#btnr{
     grid-area: b3;
     margin-top: 5px;
 }
-#btndiviser{
+#btnr span {
+    font-size: 17px;
+}
+#btnDiv{
     grid-area: b4;
     margin-top: 5px;
 }
@@ -156,7 +233,7 @@ p{
 #btn9{
     grid-area: c3;
 }
-#btnmultiplier{
+#btnMul{
     grid-area: c4;
 }
 #btn4{
@@ -168,7 +245,7 @@ p{
 #btn6{
     grid-area: d3;
 }
-#btnsoustraire{
+#btnSub{
     grid-area: d4;
 }
 #btn1{
@@ -180,41 +257,66 @@ p{
 #btn3{
     grid-area: e3;
 }
-#btnadditionner{
+#btnAdd{
     grid-area: e4;
 }
-#btnH{
+#btnh{
     grid-area: f1;
 }
 #btn0{
     grid-area: f2;
 }
-#btnpoint{
+#btnPt{
     grid-area: f3;
 }
-#btnegal{
+#btnEnter{
     grid-area: f4;
+}
+.buttons:hover{
+    background-color: var(--color-buttons);
+}
+.btnOpe:hover {
+    background-color: var(--color-ope);
+}
+#btnDelete:hover{
+    background-color: var(--color-bolder);
+}
+#btnBackspace:hover {
+    background-color: var(--color-bold);
+}
+#btnh:hover{
+    background-color: var(--color-medium);
+}
+#btnPt:hover{
+    background-color: var(--color-medium);
+}
+#btnEnter:hover{
+    background-color: var(--color-light);
+}
+.btn-enlight {
+    background-color: var(--color-light);
+
 }
 /* ----------------------- media -----------------*/
 @media (max-width: 600px){ 
     h1{
         margin: 1vh auto 1vh auto;
     }
-    #entete{
+    #calculator-head{
         grid-area: a;
         width: 95vw;
         max-width: 95vw;
         height: 15vh;
         max-height: 15vh;
     }
-    #ecran{
+    #calculator-screen{
         width: 90%;
         height: 90%;
         position: relative;
         left: 0;
         top: 10px;
     }
-    #generale{
+    #calculator{
         width: 95vw;
         height: 85vh;
         max-width: 95vw;
@@ -222,7 +324,7 @@ p{
         background-color: rgb(20, 65, 68);
         border-radius: 10px;
     }
-    #clavier{
+    #calculator-body{
         width: 95vw;
         max-width: 95vw;
     }
@@ -234,7 +336,7 @@ p{
     }
 } 
 @media (max-width: 350px){
-    #btnreset{
+    #btnDelete{
         font-size: 1.1rem;
     }
 } 
