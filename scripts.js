@@ -175,6 +175,11 @@ class HumanRessources {
             return;// pauvre ;)
         }
         let result = this.getResultFromArray(this.equation);
+
+        this.displayResult(result);
+    }
+
+    displayResult(result) {
         let clockResult = this.clockFormat(result);
 
         this.totalClock.textContent = clockResult;

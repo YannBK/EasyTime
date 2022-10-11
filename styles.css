@@ -81,11 +81,9 @@ h1 a:first-child:hover {
     width: 70vw;
     height: 71vh;
     max-width: 450px;
-    /* max-height: 666px; */
     grid-template-rows: 100px;
     grid-template-areas: 
     'a';
-    /* background-color: rgb(20, 65, 68); */
     background-color: rgb(48, 85, 68, 0.9);
     border-top: rgb(74, 74, 74) solid 5px;
     border-left: rgb(74, 74, 74) solid 5px;
@@ -144,7 +142,7 @@ p{
     margin: auto 5px;
     overflow: hidden;
     text-overflow: ellipsis;
-    /* font-size: 88px;avec que de 8 à entrer en input c'est magnifique */
+    /* font-size: 88px;avec que des 8 à entrer en input c'est magnifique */
     font-size: 22px;
 }
 /* --------------- Affichage complémentaire --------------- */
@@ -203,7 +201,6 @@ p{
     border: rgb(66,66,66) solid 5px;
     font-size: 1.7rem; 
 }
-
 
 #btnDelete{
     grid-area: b1;
