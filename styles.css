@@ -23,7 +23,7 @@ body{
     justify-content: center;
     text-align: center;
     min-height: 100vh;
-    background-image: url('/pexels-karolina-grabowska-4386370.jpg');
+    background-image: url('./pexels-karolina-grabowska-4386370.jpg');
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
