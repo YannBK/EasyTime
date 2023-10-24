@@ -28,58 +28,14 @@ body{
     background-size: cover;
     background-repeat: no-repeat;
 }
-h1 {
-    position: relative;
-    height: 88px;
-    margin: 2.5vh auto 2.5vh auto;
-    position: relative;
-    width: 200px;
-    line-height: 44px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background-color: rgb(44,44,44);
-    width: 200px;
-    border-radius: 0 44px 0 44px;
-}
-
-h1 a,
-h1 a:visited,
-h1 a:active {
-    width: 200px;
-    padding: 0px;
-    margin: 0px;
-    height: 50%;
-    transition: .8s;
-    color: rgb(44,44,44);
-    background-color: rgb(244,244,226);
-    text-decoration: none;
-    border-radius: 0 0 0 44px;
-}
-
-h1 a:hover {
-    color: rgb(244,244,226);
-    background-color: rgb(44,44,44);
-}
-
-h1 a:first-child {
-    color: rgb(244,244,226);
-    background-color: transparent;
-    border-radius: 0 44px 0 0;
-}
-
-h1 a:first-child:hover {
-    color: rgb(44,44,44);
-    background-color: rgb(244,244,226);
-}
 /* --------------- Calculatrice --------------- */
 #calculator{
     display: flex;
     display: grid;
     margin: auto;
+    margin-top: 10vh;
     width: 70vw;
-    height: 71vh;
+    /* height: 71vh; */
     max-width: 450px;
     grid-template-rows: 100px;
     grid-template-areas: 
@@ -121,18 +77,18 @@ h1 a:first-child:hover {
     color: rgb(255, 183, 0);
     margin-bottom: 10px;
 }
+#calculator-result {
+    display: flex;
+    justify-content: space-between;
+}
 #total-decimal{
-    text-align: left;
-    font-size: 1.4rem;
+    display: inline;
     color: rgb(255, 183, 0);
-    bottom: 0px;
     font-size: 24px;
 }
 #total-clock{
-    text-align: right;
-    font-size: 1.4rem;
+    display: inline;
     color: rgb(148, 230, 94);
-    bottom: 0px;
     font-size: 24px;
 }
 p{
@@ -142,7 +98,6 @@ p{
     margin: auto 5px;
     overflow: hidden;
     text-overflow: ellipsis;
-    /* font-size: 88px;avec que des 8 à entrer en input c'est magnifique */
     font-size: 22px;
 }
 /* --------------- Affichage complémentaire --------------- */
@@ -156,7 +111,9 @@ p{
     line-height: 20px;
     font-size: 1.4rem;
     margin: 20px auto;
+    padding: 5px;
     color: rgb(244,244,226);
+    background-color: #222;
 }
 .totalOrange{
     color: rgb(255, 183, 0);
